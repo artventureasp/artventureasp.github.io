@@ -1,0 +1,18 @@
+{
+  "name": "artventure-asp",
+  "version": "1.0.0",
+  "description": "Peer support art therapy platform project. Developed for Agile Software Projects course (University of London BSc computer science degree)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-db": "cat db_schema.sql | sqlite3 database.db #build new database from sql schema file",
+    "clean-db": "rm database.db #will removes old database",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sqlite3": "^5.1.7"
+  }
+}
