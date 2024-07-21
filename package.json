@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "sqlite3": "^5.1.7"
+    "mongodb": "^6.8.0",
+    "vue": "^3.4.33"
   }
 }
