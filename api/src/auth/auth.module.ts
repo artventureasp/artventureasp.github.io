@@ -6,6 +6,7 @@ import { AuthService } from "./auth.service";
 import { UserModule } from "../user/user.module";
 import { User, UserSchema } from "../user/schema/user.schema";
 import { JwtModule } from "@nestjs/jwt";
+import { ServicesModule } from "../services/services.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { JwtModule } from "@nestjs/jwt";
       { name: User.name, schema: UserSchema },
     ]),
     JwtModule.register({ secret: 'top secret' }),
+    ServicesModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
