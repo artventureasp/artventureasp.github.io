@@ -6,6 +6,8 @@ import { Model } from "mongoose";
 import { Auth, AuthDocument } from "./schema/auth.schema";
 import { randomBytes, scryptSync } from "crypto";
 import { JwtService } from "@nestjs/jwt";
+import { FirebaseService } from "../services/firebase.service";
+import { getDownloadURL } from "firebase-admin/storage";
 
 @Injectable()
 export class AuthService {
@@ -13,13 +15,20 @@ export class AuthService {
     @InjectModel(Auth.name) private authModel: Model<AuthDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private jwtService: JwtService,
+    private firebaseService: FirebaseService,
   ) {}
   
-  async signup(body: SignupDto) {
+  async signup(body: SignupDto, avatar: any) {
     const user = new this.userModel({
       email: body.email,
       username: body.username,
     });
+    if (avatar) {
+      const filepath = `users/${user._id}/${avatar.originalname}`;
+      const fileRef = this.firebaseService.getBucket().file(filepath);
+      await fileRef.save(avatar.buffer);
+      user.avatar = await getDownloadURL(fileRef);
+    }
     try {
       await user.save();
     } catch (err) {
