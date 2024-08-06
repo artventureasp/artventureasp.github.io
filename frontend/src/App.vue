@@ -29,3 +29,5 @@ export default {
 </template>
 
 <style scoped></style>
+
+<style src="./styles.css"></style>
