@@ -42,8 +42,6 @@ jobs:
         run: cd ./frontend && npm ci
       - name: Build
         run: cd ./frontend && npm run build
-      - name: Prefix assets
-        run: cd ./frontend && node prefix-assets-path.js
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
