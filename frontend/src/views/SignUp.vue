@@ -5,9 +5,11 @@ import Button from 'primevue/button';
 import { useUserStore } from "@/stores/user";
 import { authApi } from "@/api/auth";
 import { useToast } from 'primevue/usetoast';
+import { useRouter } from "vue-router";
 
 const toast = useToast();
 const userStore = useUserStore();
+const router = useRouter();
 
 const email = ref();
 const username = ref();
@@ -25,6 +27,7 @@ async function signup() {
     });
     localStorage.setItem('token', response.data.token);
     userStore.setUser(response.data.user);
+    router.replace('/');
   } catch (err) {
     const message = err.data?.message ?? 'Unexpected error';
     toast.add({ severity: 'error', summary: 'Error signing up', detail: message, life: 3000 });

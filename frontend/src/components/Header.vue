@@ -1,5 +1,6 @@
 <script setup>
 import { useUserStore } from "@/stores/user";
+import Button from "primevue/button";
 
 const userStore = useUserStore();
 </script>
@@ -12,7 +13,11 @@ const userStore = useUserStore();
           <h1> ARTVENTURE LOGO HERE </h1>
         </div>
         <div class="col-auto">
-          <p class="m-0">{{ userStore.user?.username }}</p>
+          <p v-if="userStore.user" class="m-0">{{ userStore.user?.username }}</p>
+          <template v-else>
+            <Button as="router-link" to="/account/login" label="Log In" size="small" link/>
+            <Button class="ms-2" as="router-link" to="/account/sign-up" label="Sign Up" size="small"/>
+          </template>
         </div>
       </div>
     </div>
