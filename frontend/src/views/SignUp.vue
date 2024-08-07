@@ -1,29 +1,60 @@
 <script setup>
+import { ref } from "vue";
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import { useUserStore } from "@/stores/user";
+import { authApi } from "@/api/auth";
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
+const userStore = useUserStore();
+
+const email = ref();
+const username = ref();
+const password = ref();
+const isLoading = ref(false);
+
+async function signup() {
+  isLoading.value = true;
+
+  try {
+    const response = await authApi.signup({
+      email: email.value,
+      username: username.value,
+      password: password.value,
+    });
+    localStorage.setItem('token', response.data.token);
+    userStore.setUser(response.data.user);
+  } catch (err) {
+    const message = err.data?.message ?? 'Unexpected error';
+    toast.add({ severity: 'error', summary: 'Error signing up', detail: message, life: 3000 });
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>
 
 <template>
   <div class="container">
     <div class="signup-container">
-      <img class="background" src="../assets/images/leaves-7445477_1280 1-2.png" alt="Leaves background">
+      <img class="background" src="@/assets/images/leaves-7445477_1280 1-2.png" alt="Leaves background">
       <h1 class="call-to fs-3">Join Us and Be an ArtVenturer</h1>
       <h2 class="mt-5">Create an account</h2>
       <p>Enter your email to sign up to ArtVenture</p>
 
-      <form class="signup-form">
+      <form class="signup-form" @submit.prevent="signup">
         <div class="row justify-content-center">
           <div class="col-12">
-            <InputText class="w-100" type="email" required size="large" placeholder="Email" />
+            <InputText required v-model="email" class="w-100" type="email" size="large" placeholder="Email" />
           </div>
           <div class="mt-3 col-12">
-            <InputText class="w-100" type="text" required size="large" placeholder="Username" />
+            <InputText required v-model="username" class="w-100" type="text" size="large" placeholder="Username" />
           </div>
           <div class="mt-3 col-12">
-            <InputText class="w-100" type="password" required size="large" placeholder="Password" />
+            <InputText required v-model="password" class="w-100" type="password" size="large" placeholder="Password" />
           </div>
           <div class="mt-3 col-auto">
-            <Button label="Sign Up" size="large" type="submit" />
+            <Button :loading="isLoading" label="Sign Up" size="large" type="submit" />
           </div>
         </div>
       </form>

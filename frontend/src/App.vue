@@ -1,24 +1,14 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
-<script>
-import Navbar from './components/Navbar.vue'
-import Footer from './components/Footer.vue'
-import Header from './components/Header.vue'
-
-export default {
-  name: 'App',
-  components: {
-    Navbar,
-    Footer,
-    Header
-  }
-}
+import Footer from '@/components/Footer.vue';
+import Navbar from '@/components/Navbar.vue';
+import Header from '@/components/Header.vue';
+import { RouterLink, RouterView } from 'vue-router';
+import Toast from 'primevue/toast';
 </script>
 
 <template>
   <div id="app">
+    <Toast />
     <Header />
     <Navbar />
     <RouterView />
