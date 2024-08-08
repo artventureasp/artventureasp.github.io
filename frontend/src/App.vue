@@ -1,24 +1,29 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
+import Footer from '@/components/Footer.vue';
+import Navbar from '@/components/Navbar.vue';
+import Header from '@/components/Header.vue';
+import { RouterLink, RouterView } from 'vue-router';
+import Toast from 'primevue/toast';
+import { profileApi } from "@/api/profile";
+import { useUserStore } from "@/stores/user";
 
-<script>
-import Navbar from './components/Navbar.vue'
-import Footer from './components/Footer.vue'
-import Header from './components/Header.vue'
+const userStore = useUserStore();
 
-export default {
-  name: 'App',
-  components: {
-    Navbar,
-    Footer,
-    Header
-  }
+async function initUser() {
+  try {
+    const response = await profileApi.getProfile();
+    if (response?.data?.user) {
+      userStore.setUser(response.data.user);
+    }
+  } catch (err) {}
 }
+
+initUser();
 </script>
 
 <template>
   <div id="app">
+    <Toast />
     <Header />
     <Navbar />
     <RouterView />
@@ -29,3 +34,5 @@ export default {
 </template>
 
 <style scoped></style>
+
+<style src="./styles.css"></style>
