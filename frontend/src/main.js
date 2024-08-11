@@ -7,6 +7,9 @@ import PrimeVue from "primevue/config";
 import Theme from "@primevue/themes/nora";
 import ToastService from "primevue/toastservice";
 
+//import CSS for icons
+import 'primeicons/primeicons.css'; 
+
 const app = createApp(App);
 
 app.use(createPinia());

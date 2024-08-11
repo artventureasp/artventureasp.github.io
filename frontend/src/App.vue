@@ -1,6 +1,5 @@
 <script setup>
 import Footer from '@/components/Footer.vue';
-import Navbar from '@/components/Navbar.vue';
 import Header from '@/components/Header.vue';
 import { RouterLink, RouterView } from 'vue-router';
 import Toast from 'primevue/toast';
@@ -25,7 +24,6 @@ initUser();
   <div id="app">
     <Toast />
     <Header />
-    <Navbar />
     <RouterView />
 
     <Footer />
