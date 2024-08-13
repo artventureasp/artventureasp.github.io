@@ -41,7 +41,7 @@ export class Post {
   mood: string;
 
   @Prop({ type: PostMediaSchema, required: true })
-  media: PostOptions;
+  media: PostMedia;
 
   @Prop({ type: PostOptionsSchema, default: {} })
   options: PostOptions;
