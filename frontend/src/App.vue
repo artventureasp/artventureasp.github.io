@@ -21,16 +21,20 @@ initUser();
 </script>
 
 <template>
-  <div id="app">
-    <Toast />
-    <Header />
+  <Toast />
+  <Header />
+  <main>
     <RouterView />
+  </main>
 
-    <Footer />
-    <!-- Rest of your app's components -->
-  </div>
+  <Footer />
+  <!-- Rest of your app's components -->
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  flex: 1;
+}
+</style>
 
 <style src="./styles.css"></style>
