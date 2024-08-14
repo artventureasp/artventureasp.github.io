@@ -3,7 +3,7 @@ import { Axios } from "axios";
 export class BaseApi {
   constructor() {
     this.client = new Axios({
-      baseURL: 'http://localhost:3000',
+      baseURL: 'https://artventure-a982a371e29d.herokuapp.com',
       headers: {
         'Content-Type': 'application/json'
       },
