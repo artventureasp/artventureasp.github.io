@@ -3,7 +3,8 @@ import { Axios } from "axios";
 export class BaseApi {
   constructor() {
     this.client = new Axios({
-      baseURL: 'https://artventure-a982a371e29d.herokuapp.com',
+      // baseURL: 'https://artventure-a982a371e29d.herokuapp.com',
+      baseURL: 'http://localhost:3000',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -37,6 +38,13 @@ export class BaseApi {
 
   async post(url, data) {
     const response = await this.client.post(url, JSON.stringify(data));
+    this.parseResponse(response);
+    this.checkResponse(response);
+    return response;
+  }
+
+  async postForm(url, form) {
+    const response = await this.client.post(url, form);
     this.parseResponse(response);
     this.checkResponse(response);
     return response;
