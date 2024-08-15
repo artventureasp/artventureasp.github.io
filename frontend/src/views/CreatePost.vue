@@ -3,6 +3,7 @@ import Button from "primevue/button";
 import Editor from "primevue/editor";
 import FileUpload from "primevue/fileupload";
 import ModalField from "@/components/ModalField.vue";
+import PostOptionsModal from "@/components/PostOptionsModal.vue";
 import { useForm } from 'vee-validate';
 import { ref } from "vue";
 import { postApi } from "@/api/post";
@@ -10,7 +11,7 @@ import { useToast } from 'primevue/usetoast';
 import { topics, moods } from "@/utils/constants";
 
 const toast = useToast();
-const { errors, values, defineField, handleSubmit, setFieldValue } = useForm({
+const { errors, defineField, handleSubmit, setFieldValue } = useForm({
   validationSchema: {
     mood: 'required',
     topic: 'required',
@@ -22,13 +23,18 @@ const { errors, values, defineField, handleSubmit, setFieldValue } = useForm({
 const [mood] = defineField('mood');
 const [topic] = defineField('topic');
 const [text] = defineField('text');
-const [media] = defineField('media');
+defineField('media');
 const isLoading = ref(false);
+const isOptionsVisible = ref(false);
+const options = ref({
+  public: true,
+  commentsOn: true,
+});
 
 const onSubmit = handleSubmit(async values => {
   isLoading.value = true;
   try {
-    await postApi.createPost(values);
+    await postApi.createPost({ ...values, options: options.value });
     toast.add({ severity: 'success', summary: 'Post was created', life: 3000 });
   } catch (err) {
     const message = err.data?.message ?? 'Unexpected error';
@@ -57,7 +63,7 @@ const onFileClear = (e) => {
               <h2 class="m-0">Make a Post</h2>
             </div>
             <div class="col">
-              <Button label="Options" severity="secondary" size="small" />
+              <Button label="Options" severity="secondary" size="small" @click="isOptionsVisible = true" />
             </div>
           </div>
           <div class="row mb-3">
@@ -117,6 +123,7 @@ const onFileClear = (e) => {
         </form>
       </div>
     </div>
+    <PostOptionsModal v-model="options" :is-visible="isOptionsVisible" @update:is-visible="isOptionsVisible = false"/>
   </div>
 </template>
 
