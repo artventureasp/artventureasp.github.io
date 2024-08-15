@@ -30,8 +30,8 @@ export class ProfileService {
       dbUser.about = body.about;
     }
     if (body.settings != undefined) {
-      if (body.settings.postsHidden !== undefined) {
-        dbUser.settings.postsHidden = body.settings.postsHidden;
+      if (body.settings.public !== undefined) {
+        dbUser.settings.public = body.settings.public;
       }
     }
 

@@ -4,7 +4,7 @@ import { IsBoolean, IsNotEmpty, IsObject, IsOptional, IsString, ValidateNested }
 export class UpdateProfileSettingsDto {
   @IsBoolean()
   @IsOptional()
-  postsHidden?: boolean;
+  public?: boolean;
 }
 
 export class UpdateProfileDto {

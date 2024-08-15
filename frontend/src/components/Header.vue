@@ -9,6 +9,10 @@ const router = useRouter();
 const userStore = useUserStore();
 const isSidebarVisible = ref(false); //this is used to control sidebar visibility based on button click status
 
+router.beforeEach(() => {
+  isSidebarVisible.value = false;
+  return true;
+});
 
 function logout() {
   localStorage.removeItem('token');
