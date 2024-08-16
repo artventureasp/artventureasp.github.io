@@ -38,7 +38,7 @@ async function signup() {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container py-5">
     <div class="signup-container">
       <img class="background" src="@/assets/images/leaves-7445477_1280 1-2.png" alt="Leaves background">
       <h1 class="call-to fs-3">Join Us and Be an ArtVenturer</h1>

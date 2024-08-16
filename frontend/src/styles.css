@@ -14,3 +14,14 @@ a {
 a:not(.p-button):hover {
   text-decoration: underline;
 }
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

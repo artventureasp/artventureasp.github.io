@@ -1,10 +1,10 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsNotEmpty, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsBooleanString, IsNotEmpty, IsObject, IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class UpdateProfileSettingsDto {
-  @IsBoolean()
+  @IsBooleanString()
   @IsOptional()
-  postsHidden?: boolean;
+  public?: boolean;
 }
 
 export class UpdateProfileDto {

@@ -4,11 +4,16 @@ import { useRouter } from "vue-router";
 import { ref } from 'vue';
 import Button from "primevue/button";
 import Sidebar from "primevue/sidebar";
+import Avatar from "primevue/avatar";
 
 const router = useRouter();
 const userStore = useUserStore();
 const isSidebarVisible = ref(false); //this is used to control sidebar visibility based on button click status
 
+router.beforeEach(() => {
+  isSidebarVisible.value = false;
+  return true;
+});
 
 function logout() {
   localStorage.removeItem('token');
@@ -50,7 +55,9 @@ function logout() {
         </div>
         <!--Sign in/sign up authentication links-->
         <div>
-          <p v-if="userStore.user" class="m-0">{{ userStore.user?.username }}</p>
+          <router-link v-if="userStore.user" to="/account">
+            <Avatar :image="userStore.user.avatar" size="large" shape="circle" />
+          </router-link>
           <template v-else>
             <Button as="router-link" to="/account/login" label="Log In" size="small" link/>
             <Button class="ms-2" as="router-link" to="/account/sign-up" label="Sign Up" size="small"/>

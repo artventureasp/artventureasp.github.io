@@ -3,8 +3,8 @@ import { HydratedDocument } from 'mongoose';
 
 @Schema({ _id: false })
 export class UserSettings {
-  @Prop({ type: Boolean, default: false })
-  postsHidden: boolean;
+  @Prop({ type: Boolean, default: true })
+  public: boolean;
 }
 
 export const UserSettingsSchema = SchemaFactory.createForClass(UserSettings);

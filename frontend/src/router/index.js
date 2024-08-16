@@ -5,6 +5,7 @@ import CreatePost from '../views/CreatePost.vue'
 import UserProfile from '../views/UserProfile.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
+import EditProfile from '@/views/EditProfile.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,11 @@ const router = createRouter({
       path: '/account',
       name: 'My Profile',
       component: UserProfile
+    },
+    {
+      path: '/account/edit',
+      name: 'Edit Profile',
+      component: EditProfile,
     },
 
     {

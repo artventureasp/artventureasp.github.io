@@ -20,6 +20,9 @@ export class PostMedia {
 
   @Prop({ type: String, required: true })
   url: string;
+
+  @Prop({ type: String, required: true })
+  filename: string;
 }
 
 export const PostMediaSchema = SchemaFactory.createForClass(PostMedia);
@@ -41,7 +44,7 @@ export class Post {
   mood: string;
 
   @Prop({ type: PostMediaSchema, required: true })
-  media: PostOptions;
+  media: PostMedia;
 
   @Prop({ type: PostOptionsSchema, default: {} })
   options: PostOptions;
