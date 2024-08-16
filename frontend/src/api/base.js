@@ -49,4 +49,11 @@ export class BaseApi {
     this.checkResponse(response);
     return response;
   }
+
+  async putForm(url, form) {
+    const response = await this.client.put(url, form);
+    this.parseResponse(response);
+    this.checkResponse(response);
+    return response;
+  }
 }

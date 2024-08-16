@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
 import { UpdateProfileDto } from "./dto/update-profile.dto";
 import { User, UserDocument } from "../user/schema/user.schema";
 import { InjectModel } from "@nestjs/mongoose";
@@ -40,6 +40,9 @@ export class ProfileService {
     try {
       await dbUser.save();
     } catch (err) {
+      if (/duplicate/.test(err.message)) {
+        throw new ConflictException({ message: 'Username is already taken' });
+      }
       throw new BadRequestException({ message: err.message });
     }
     return { user: dbUser };
