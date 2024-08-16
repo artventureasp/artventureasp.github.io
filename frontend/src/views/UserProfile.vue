@@ -2,19 +2,34 @@
 import Tag from 'primevue/tag';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
+import ProgressSpinner from 'primevue/progressspinner';
+import PostCardPreview from "@/components/PostCardPreview.vue";
 import { useUserStore } from "@/stores/user";
+import { ref } from 'vue';
+import { profileApi } from '@/api/profile';
 
 const userStore = useUserStore();
+const posts = ref([]);
+const isPostsLoading = ref(false);
+
+async function fetchPosts() {
+  isPostsLoading.value = true;
+  try {
+
+    const response = await profileApi.getPosts();
+    posts.value = response.data;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isPostsLoading.value = false;
+  }
+}
+fetchPosts();
 
 </script>
 
 <template>
   <div v-if="userStore.user" class="container py-5">
-    <div class="row justify-content-center">
-      <div class="col-lg-6">
-        <Button label="Edit" icon="pi pi-user-edit" size="small" severity="secondary" class="float-end" outlined/>
-      </div>
-    </div>
     <div class="mb-2">
       <div class="avatar m-auto">
         <div v-if="!userStore.user.avatar" class="avatar-placeholder">
@@ -23,14 +38,17 @@ const userStore = useUserStore();
         <img v-else :src="userStore.user.avatar" alt="Avatar" preview />
       </div>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
       <p class="text-center fs-5 m-0">{{ userStore.user.username }}</p>
     </div>
     <div class="text-center mb-4">
       <Tag v-if="userStore.user.settings.public" value="Public" severity="info"/>
       <Tag v-else value="Private" severity="contrast"/>
     </div>
-    <div class="row justify-content-center" v-if="userStore.user.about">
+    <div class="text-center mb-4">
+      <Button label="Edit" icon="pi pi-user-edit" size="small" severity="secondary" outlined/>
+    </div>
+    <div class="row justify-content-center mb-4" v-if="userStore.user.about">
       <div class="col-lg-6">
         <Card>
           <template #title>Bio</template>
@@ -42,13 +60,27 @@ const userStore = useUserStore();
         </Card>
       </div>
     </div>
+    <div class="pt-3 posts">
+      <h3 class="text-center mb-4">Posts</h3>
+      <div class="text-center" v-if="isPostsLoading">
+        <ProgressSpinner style="width: 70px; height: 70px;"/>
+      </div>
+      <div class="text-center" v-else-if="!posts.length">
+        <p>No posts yet</p>
+      </div>
+      <div class="row" v-else>
+        <div class="col-md-6 col-lg-4 col-xl-3" v-for="post of posts">
+          <PostCardPreview :post="post"/>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 20px;
   background-color: #e2e8f0;
   overflow: hidden;

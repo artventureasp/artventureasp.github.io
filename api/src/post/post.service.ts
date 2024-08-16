@@ -27,6 +27,7 @@ export class PostService {
         newPost.media = {
           url: await getDownloadURL(fileRef),
           mimetype: media.mimetype,
+          filename: media.originalname,
         };
       }
 

@@ -5,11 +5,13 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { FirebaseService } from "../services/firebase.service";
 import { getDownloadURL } from "firebase-admin/storage";
+import { Post, PostDocument } from "../post/schema/post.schema";
 
 @Injectable()
 export class ProfileService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Post.name) private postModel: Model<PostDocument>,
     private firebaseService: FirebaseService,
   ) {}
 
@@ -41,5 +43,9 @@ export class ProfileService {
       throw new BadRequestException({ message: err.message });
     }
     return { user: dbUser };
+  }
+
+  getPosts(user: UserDocument) {
+    return this.postModel.find({ user: user._id });
   }
 }

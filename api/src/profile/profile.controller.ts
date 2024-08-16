@@ -21,4 +21,9 @@ export class ProfileController {
   ) {
     return this.profileService.updateProfile(body, avatar, req.user);
   }
+
+  @Get('posts')
+  getPosts(@Req() req: any) {
+    return this.profileService.getPosts(req.user);
+  }
 }
