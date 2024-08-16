@@ -46,7 +46,7 @@ fetchPosts();
       <Tag v-else value="Private" severity="contrast"/>
     </div>
     <div class="text-center mb-4">
-      <Button label="Edit" icon="pi pi-user-edit" size="small" severity="secondary" outlined/>
+      <Button as="router-link" to="/account/edit" label="Edit profile" icon="pi pi-user-edit" size="small" severity="secondary" outlined/>
     </div>
     <div class="row justify-content-center mb-4" v-if="userStore.user.about">
       <div class="col-lg-6">
