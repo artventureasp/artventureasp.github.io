@@ -43,10 +43,22 @@ export class PostService {
     return { post: newPost };
   }
 
-  async getPostsFeed(query: GetPostsFeedParams) {
+  async getPostsFeed(params: GetPostsFeedParams) {
+    const query: any = {};
     const limit = 5;
-    const skip = (query.page * limit) - limit;
-    const posts = await this.postModel.find()
+    const skip = (params.page * limit) - limit;
+
+    if (params.filter) {
+      const filter = JSON.parse(params.filter);
+      if (filter.topics && filter.topics.length) {
+        query.topic = { $in: filter.topics };
+      }
+      if (filter.moods && filter.moods.length) {
+        query.mood = { $in: filter.moods };
+      }
+    }
+
+    const posts = await this.postModel.find(query)
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 })

@@ -13,8 +13,8 @@ class PostApi extends BaseApi {
     return this.postForm('/posts', form);
   }
 
-  getPostsFeed(page) {
-    return this.get('/posts', { page });
+  getPostsFeed(page, filter) {
+    return this.get('/posts', { page, filter });
   }
 }
 
