@@ -6,6 +6,7 @@ import UserProfile from '../views/UserProfile.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
 import EditProfile from '@/views/EditProfile.vue';
+import Feed from '@/views/Feed.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,7 +16,11 @@ const router = createRouter({
       name: 'Home',
       component: HomeView
     },
-
+    {
+      path: '/feed',
+      name: 'Feed',
+      component: Feed,
+    },
     {
       path: '/account',
       name: 'My Profile',

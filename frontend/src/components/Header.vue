@@ -34,8 +34,11 @@ function logout() {
             <nav>
               <ul>
                   <li><router-link to="/">Home</router-link></li>
-                  <li><router-link to="/account">My Profile</router-link></li>
-                  <li><router-link to="/create-post">Create a Post</router-link></li>
+                  <div v-if="userStore.user">
+                    <li><router-link to="/feed">Feed</router-link></li>
+                    <li><router-link to="/account">My Profile</router-link></li>
+                    <li><router-link to="/create-post">Create a Post</router-link></li>
+                  </div>
                   <li><router-link to="/professional-help">Professional Help</router-link></li>
 
                   <li v-if="!userStore.user"><router-link to="/account/sign-up">Sign Up</router-link></li>

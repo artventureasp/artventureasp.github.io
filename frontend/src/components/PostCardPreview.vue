@@ -41,7 +41,7 @@ const isVideo = computed(() => {
           <img src="@/assets/images/note.png" alt="note image">
         </div>
         <div v-else-if="isVideo" class="h-100">
-          <img src="@/assets/images/play.png" alt="note image">
+          <img src="@/assets/images/play.png" alt="play button image">
         </div>
       </div>
     </template>
