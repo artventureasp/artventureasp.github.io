@@ -15,9 +15,8 @@ const isPostsLoading = ref(false);
 async function fetchPosts() {
   isPostsLoading.value = true;
   try {
-
     const response = await profileApi.getPosts();
-    posts.value = response.data;
+    posts.value = response.data.posts;
   } catch (err) {
     console.log(err);
   } finally {

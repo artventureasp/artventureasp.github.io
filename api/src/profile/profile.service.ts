@@ -48,7 +48,8 @@ export class ProfileService {
     return { user: dbUser };
   }
 
-  getPosts(user: UserDocument) {
-    return this.postModel.find({ user: user._id });
+  async getPosts(user: UserDocument) {
+    const posts = await this.postModel.find({ user: user._id });
+    return { posts };
   }
 }

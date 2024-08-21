@@ -1,16 +1,46 @@
 <script setup>
+import { ref } from "vue";
+import ProgressSpinner from "primevue/progressspinner";
+import Button from "primevue/button";
+import { postApi } from "@/api/post";
 import PostCardFeed from "@/components/PostCardFeed.vue";
 
-const posts = [
-  
-];
+const posts = ref([]);
+const isPostsLoading = ref(false);
+const isEndReached = ref(false);
+let page = 1;
+
+async function fetchPosts() {
+  isPostsLoading.value = true;
+  try {
+    const response = await postApi.getPostsFeed(page);
+    posts.value = posts.value.concat(response.data.posts);
+    if (response.data.posts.length) {
+      page++;
+    } else if (page > 1) {
+      isEndReached.value = true;
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isPostsLoading.value = false;
+  }
+}
+fetchPosts();
 </script>
 
 <template>
   <div class="container py-5">
     <div class="row justify-content-center">
       <div class="col-12 col-sm-10 col-md-8">
-        <PostCardFeed class="mb-4" v-for="post in posts" :key="post._id" :post="post"/>
+        <PostCardFeed class="mb-5" v-for="post in posts" :key="post._id" :post="post"/>
+        <div class="text-center" v-if="isPostsLoading">
+          <ProgressSpinner style="width: 70px; height: 70px;"/>
+        </div>
+        <div class="text-center" v-if="posts.length && !isPostsLoading && !isEndReached">
+          <Button @click="fetchPosts" label="Load more" severity="secondary" outlined />
+        </div>
+        <p class="text-center" v-if="isEndReached">You have reached the end...</p>
       </div>
     </div>
   </div>

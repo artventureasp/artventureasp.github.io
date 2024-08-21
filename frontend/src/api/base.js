@@ -29,8 +29,8 @@ export class BaseApi {
     response.data = JSON.parse(response.data);
   }
 
-  async get(url) {
-    const response = await this.client.get(url);
+  async get(url, params) {
+    const response = await this.client.get(url, { params });
     this.parseResponse(response);
     this.checkResponse(response);
     return response;
