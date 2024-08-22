@@ -6,6 +6,7 @@ import { Model } from "mongoose";
 import { UserDocument } from "../user/schema/user.schema";
 import { FirebaseService } from "../services/firebase.service";
 import { getDownloadURL } from "firebase-admin/storage";
+import { GetPostsFeedParams } from "./dto/get-posts-feed-params.dto";
 
 @Injectable()
 export class PostService {
@@ -40,5 +41,28 @@ export class PostService {
     }
 
     return { post: newPost };
+  }
+
+  async getPostsFeed(params: GetPostsFeedParams) {
+    const query: any = {};
+    const limit = 5;
+    const skip = (params.page * limit) - limit;
+
+    if (params.filter) {
+      const filter = JSON.parse(params.filter);
+      if (filter.topics && filter.topics.length) {
+        query.topic = { $in: filter.topics };
+      }
+      if (filter.moods && filter.moods.length) {
+        query.mood = { $in: filter.moods };
+      }
+    }
+
+    const posts = await this.postModel.find(query)
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .populate({ path: 'user', select: 'avatar username' });
+    return { posts };
   }
 }

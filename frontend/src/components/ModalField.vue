@@ -24,11 +24,13 @@ function update(option) {
 <template>
   <Button :class="class" :style="style" :label="model || label" :rounded="rounded" @click="isVisible = true"/>
   <Dialog v-model:visible="isVisible" modal class="modal-field-dialog">
-    <template #header><span></span></template>
+    <template #header>
+      <h4 class="mb-0">{{ label }}</h4>
+    </template>
     <div v-if="groupedOptions">
-      <div v-for="(options, key) of groupedOptions">
-        <p>{{ key }}</p>
-        <Button v-for="option of options" :label="option" rounded class="me-3 mb-3" @click="update(option)" />
+      <div v-for="option in groupedOptions">
+        <p>{{ option.label }}</p>
+        <Button v-for="item of option.items" :label="item" rounded class="me-3 mb-3" @click="update(item)" />
       </div>
     </div>
     <div v-else class="d-flex flex-wrap justify-content-center">

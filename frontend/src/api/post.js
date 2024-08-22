@@ -12,6 +12,10 @@ class PostApi extends BaseApi {
 
     return this.postForm('/posts', form);
   }
+
+  getPostsFeed(page, filter) {
+    return this.get('/posts', { page, filter });
+  }
 }
 
 export const postApi = new PostApi();
