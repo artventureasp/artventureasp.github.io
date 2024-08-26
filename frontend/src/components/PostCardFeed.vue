@@ -5,6 +5,8 @@ import Tag from "primevue/tag";
 import Image from "primevue/image";
 import { computed, ref } from "vue";
 
+import anonAvatar from "@/assets/images/anonymous-hooded-avatar.webp";
+
 const { post } = defineProps({
   post: {
     type: Object,
@@ -14,8 +16,14 @@ const { post } = defineProps({
 
 const isShort = ref(true);
 
+const username = computed(() => {
+  return !post.options.public ? 'Anonymous post' : post.user.username;
+});
+const avatar = computed(() => {
+  return !post.options.public ? anonAvatar : post.user.avatar;
+});
 const avatarLabel = computed(() => {
-  return !post.user.avatar ? post.user.username.toUpperCase().charAt(0) : undefined;
+  return !avatar.value ? post.user.username.toUpperCase().charAt(0) : undefined;
 });
 const text = computed(() => {
   if (post.text.length > 200 && isShort.value) {
@@ -39,12 +47,12 @@ const isVideo = computed(() => {
     <template #content>
       <div class="row align-items-center mb-3">
         <div class="col-auto">
-          <Avatar :label="avatarLabel" :image="post.user.avatar" style="background-color: #ece9fc; color: #2a1261" class="mr-2" size="xlarge" shape="circle" />
+          <Avatar :label="avatarLabel" :image="avatar" style="background-color: #ece9fc; color: #2a1261" class="mr-2" size="xlarge" shape="circle" />
         </div>
         <div class="col">
           <div class="row">
             <div class="col-12">
-              <p class="mb-1">{{ post.user.username }}</p>
+              <p class="mb-1">{{ username }}</p>
             </div>
             <div class="col-12">
               <Tag :value="post.mood" class="me-2"/>

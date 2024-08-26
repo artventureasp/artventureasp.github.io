@@ -59,6 +59,7 @@ export class PostService {
     }
 
     const posts = await this.postModel.aggregate([
+      { $match: query },
       { $sort: { createdAt: -1 } },
       {
         $lookup:
@@ -80,7 +81,18 @@ export class PostService {
       { $skip: skip },
       { $limit: limit },
       { $unwind: '$user' },
-      { $project: { 'user.settings': 0 } }
+      { $project: { 'user.settings': 0 } },
+      {
+        $set: {
+          user: {
+            '$cond': [
+              { '$eq': ['$options.public', false] },
+              '$$REMOVE',
+              '$user',
+            ],
+          },
+        },
+      }
     ]);
     return { posts };
   }

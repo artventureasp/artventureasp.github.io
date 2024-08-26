@@ -3,7 +3,7 @@ import { moods, topics } from "@/utils/constants";
 import Button from "primevue/button";
 import Dialog from 'primevue/dialog';
 import Listbox from 'primevue/listbox';
-import { ref, defineEmits, computed } from "vue";
+import { ref, computed } from "vue";
 
 const { isActive } = defineProps({
   isActive: {
