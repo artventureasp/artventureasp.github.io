@@ -2,29 +2,33 @@
 import { ref } from "vue";
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import { useForm } from "vee-validate";
 import { useUserStore } from "@/stores/user";
 import { authApi } from "@/api/auth";
 import { useToast } from 'primevue/usetoast';
 import { useRouter } from "vue-router";
 
+const { errors, defineField, handleSubmit } = useForm({
+  validationSchema: {
+    email: 'required',
+    username: 'required',
+    password: 'min:8',
+  },
+});
 const toast = useToast();
 const userStore = useUserStore();
 const router = useRouter();
 
-const email = ref();
-const username = ref();
-const password = ref();
+const [email] = defineField('email');
+const [username] = defineField('username');
+const [password] = defineField('password');
 const isLoading = ref(false);
 
-async function signup() {
+const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true;
 
   try {
-    const response = await authApi.signup({
-      email: email.value,
-      username: username.value,
-      password: password.value,
-    });
+    const response = await authApi.signup(values);
     localStorage.setItem('token', response.data.token);
     userStore.setUser(response.data.user);
     router.replace('/');
@@ -34,7 +38,7 @@ async function signup() {
   } finally {
     isLoading.value = false;
   }
-}
+});
 </script>
 
 <template>
@@ -45,16 +49,17 @@ async function signup() {
       <h2 class="mt-5">Create an account</h2>
       <p>Enter your email to sign up to ArtVenture</p>
 
-      <form class="signup-form" @submit.prevent="signup">
+      <form class="signup-form" @submit="onSubmit">
         <div class="row justify-content-center">
           <div class="col-12">
-            <InputText required v-model="email" class="w-100" type="email" size="large" placeholder="Email" />
+            <InputText v-model="email" :invalid="!!errors.email" class="w-100" type="email" size="large" placeholder="Email" />
           </div>
           <div class="mt-3 col-12">
-            <InputText required v-model="username" class="w-100" type="text" size="large" placeholder="Username" />
+            <InputText v-model="username" :invalid="!!errors.username" class="w-100" type="text" size="large" placeholder="Username" />
           </div>
-          <div class="mt-3 col-12">
-            <InputText required v-model="password" class="w-100" type="password" size="large" placeholder="Password" />
+          <div class="mt-3 col-12 text-start">
+            <InputText v-model="password" :invalid="!!errors.password" class="w-100" type="password" size="large" placeholder="Password" />
+            <small v-if="errors.password" class="text-danger">{{ errors.password }}</small>
           </div>
           <div class="mt-3 col-auto">
             <Button :loading="isLoading" label="Sign Up" size="large" type="submit" />

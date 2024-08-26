@@ -18,6 +18,13 @@ defineRule('required', value => {
   return true;
 });
 
+defineRule('min', (value, [min]) => {
+  if (!value || value.length < min) {
+    return `Minimum of ${min} characters is required`;
+  }
+  return true;
+});
+
 const app = createApp(App);
 
 app.use(createPinia());
