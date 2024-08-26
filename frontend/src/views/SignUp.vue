@@ -47,7 +47,7 @@ const onSubmit = handleSubmit(async (values) => {
       <img class="background" src="@/assets/images/leaves-7445477_1280 1-2.png" alt="Leaves background">
       <h1 class="call-to fs-3">Join Us and Be an ArtVenturer</h1>
       <h2 class="mt-5">Create an account</h2>
-      <p>Enter your email to sign up to ArtVenture</p>
+      <p>Enter your details to sign up to ArtVenture</p>
 
       <form class="signup-form" @submit="onSubmit">
         <div class="row justify-content-center">
@@ -67,7 +67,7 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
       </form>
 
-      <p class="signup-agreement">By clicking continue, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
+      <p class="signup-agreement">By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
 
       <div class="mt-4 d-flex align-items-center justify-content-center">
         <p class="mb-0">Already A member of ArtVenture?</p>
