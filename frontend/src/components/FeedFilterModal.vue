@@ -5,14 +5,19 @@ import Dialog from 'primevue/dialog';
 import Listbox from 'primevue/listbox';
 import { ref, defineEmits, computed } from "vue";
 
+const { isActive } = defineProps({
+  isActive: {
+    type: Boolean,
+    default: false,
+  },
+});
 const emit = defineEmits(['apply', 'clear']);
 
 const isVisible = ref(false);
 const selectedTopics = ref();
 const selectedMoods = ref();
 const isClearable = computed(() => {
-  return (selectedTopics.value && selectedTopics.value.length)
-    || (selectedMoods.value && selectedMoods.value.length);
+  return selectedTopics.value || selectedMoods.value;
 });
 
 function save() {
@@ -32,7 +37,7 @@ function clear() {
 </script>
 
 <template>
-  <Button @click="isVisible = true" class="float-end" label="Filter" icon="pi pi-filter" severity="secondary" outlined />
+  <Button @click="isVisible = true" class="float-end" label="Filter" icon="pi pi-filter" :severity="isActive ? 'primary' : 'secondary'" outlined />
   <Dialog v-model:visible="isVisible" modal class="feed-filter-dialog">
     <template #header>
       <h4 class="mb-0">Feed filter</h4>
