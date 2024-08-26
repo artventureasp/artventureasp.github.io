@@ -8,9 +8,13 @@ class ProfileApi extends BaseApi {
   updateProfile({ username, about, isPublic, avatar }) {
     const form = new FormData();
     form.append('username', username);
-    form.append('about', about);
     form.append('settings[public]', isPublic);
-    form.append('avatar', avatar);
+    if (about != undefined) {
+      form.append('about', about);
+    }
+    if (avatar) {
+      form.append('avatar', avatar);
+    }
     return this.putForm('/profile', form);
   }
 

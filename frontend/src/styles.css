@@ -19,6 +19,7 @@ a:not(.p-button):hover {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-top: 100px;
 }
 
 img {

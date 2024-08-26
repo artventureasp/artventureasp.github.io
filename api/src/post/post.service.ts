@@ -58,11 +58,30 @@ export class PostService {
       }
     }
 
-    const posts = await this.postModel.find(query)
-      .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 })
-      .populate({ path: 'user', select: 'avatar username' });
+    const posts = await this.postModel.aggregate([
+      { $sort: { createdAt: -1 } },
+      {
+        $lookup:
+        {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          pipeline: [
+            {
+              $project: { avatar: 1, username: 1, 'settings.public': 1 },
+            },
+          ],
+          as: 'user',
+        }
+      },
+      {
+        $match: { 'user.settings.public': true },
+      },
+      { $skip: skip },
+      { $limit: limit },
+      { $unwind: '$user' },
+      { $project: { 'user.settings': 0 } }
+    ]);
     return { posts };
   }
 }

@@ -49,7 +49,7 @@ export class ProfileService {
   }
 
   async getPosts(user: UserDocument) {
-    const posts = await this.postModel.find({ user: user._id });
+    const posts = await this.postModel.find({ user: user._id }).sort({ createdAt: -1 });
     return { posts };
   }
 }

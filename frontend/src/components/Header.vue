@@ -78,6 +78,10 @@ function logout() {
 <style scoped>
 /* Add styling here, adding tags above as required*/
 .site-header{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
   background-color: #f8f9fa; /* Light gray background */
   padding: 20px 0; 
   border-bottom: 1px solid #e9ecef;
