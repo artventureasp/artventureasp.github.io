@@ -8,8 +8,9 @@ import Theme from "@primevue/themes/nora";
 import ToastService from "primevue/toastservice";
 import { defineRule } from 'vee-validate';
 
-//import CSS for icons
+//import CSS
 import 'primeicons/primeicons.css';
+import 'vue3-emoji-picker/css';
 
 defineRule('required', value => {
   if (!value) {

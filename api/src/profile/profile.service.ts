@@ -49,7 +49,33 @@ export class ProfileService {
   }
 
   async getPosts(user: UserDocument) {
-    const posts = await this.postModel.find({ user: user._id }).sort({ createdAt: -1 });
+    const posts = await this.postModel.aggregate([
+      {
+        $match: { user: user._id },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $lookup:
+        {
+          from: 'postreactions',
+          localField: '_id',
+          foreignField: 'post',
+          pipeline: [
+            {
+              $group: {
+                _id: '$reaction',
+                total: { $count: { } },
+              },
+            },
+            { $sort: { total: -1 } },
+            { $project: { value: '$_id', _id: 0, total: 1 } },
+          ],
+          as: 'reactions',
+        },
+      },
+    ]);
     return { posts };
   }
 }

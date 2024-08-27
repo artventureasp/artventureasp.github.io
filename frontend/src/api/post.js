@@ -16,6 +16,10 @@ class PostApi extends BaseApi {
   getPostsFeed(page, filter) {
     return this.get('/posts', { page, filter });
   }
+
+  addPostReaction(postId, data) {
+    return this.post(`/posts/${postId}/reactions`, data);
+  }
 }
 
 export const postApi = new PostApi();

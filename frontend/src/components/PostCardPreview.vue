@@ -50,7 +50,17 @@ const isVideo = computed(() => {
       <Tag :value="post.topic" />
     </template>
     <template #content>
-      <p class="m-0">{{ textFormatted }}</p>
+      <div class="post-content">
+        <div class="mb-3">
+          <p class="m-0">{{ textFormatted }}</p>
+        </div>
+        <div>
+          <Tag v-for="reaction of post.reactions" rounded class="border border-dark-subtle text-dark me-1 mb-1" style="background: transparent;">
+            <span class="fs-6">{{ reaction.value }}</span>
+            <span class="text-body-secondary">{{ reaction.total }}</span>
+          </Tag>
+        </div>
+      </div>
     </template>
   </Card>
 </template>
@@ -58,7 +68,6 @@ const isVideo = computed(() => {
 <style scoped>
 .post {
   margin-bottom: 20px;
-  height: 400px;
 }
 
 .post-media {
@@ -69,5 +78,12 @@ const isVideo = computed(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.post .post-content {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 </style>

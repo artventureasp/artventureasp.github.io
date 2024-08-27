@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Query, Req, UploadedFile, UseInterceptors, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, Req, UploadedFile, UseInterceptors, ValidationPipe } from "@nestjs/common";
 import { NewPostDto } from "./dto/new-post.dto";
 import { PostService } from "./post.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { GetPostsFeedParams } from "./dto/get-posts-feed-params.dto";
+import { PostReactionDto } from "./dto/post-reaction.dto";
 
 @Controller('posts')
 export class PostController {
@@ -21,5 +22,14 @@ export class PostController {
   @Get()
   getPostsFeed(@Query(new ValidationPipe()) query: GetPostsFeedParams) {
     return this.postService.getPostsFeed(query);
+  }
+
+  @Post(':postId/reactions')
+  addPostReaction(
+    @Param('postId') postId: string,
+    @Req() req: any,
+    @Body(new ValidationPipe()) body: PostReactionDto,
+  ) {
+    return this.postService.addPostReaction(postId, req.user, body);
   }
 }

@@ -7,11 +7,14 @@ import { UserDocument } from "../user/schema/user.schema";
 import { FirebaseService } from "../services/firebase.service";
 import { getDownloadURL } from "firebase-admin/storage";
 import { GetPostsFeedParams } from "./dto/get-posts-feed-params.dto";
+import { PostReaction, PostReactionDocument } from "./schema/post-reaction.schema";
+import { PostReactionDto } from "./dto/post-reaction.dto";
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
+    @InjectModel(PostReaction.name) private postReactionModel: Model<PostReactionDocument>,
     private firebaseService: FirebaseService,
   ) { }
 
@@ -92,8 +95,37 @@ export class PostService {
             ],
           },
         },
-      }
+      },
+      {
+        $lookup:
+        {
+          from: 'postreactions',
+          localField: '_id',
+          foreignField: 'post',
+          pipeline: [
+            {
+              $group: {
+                _id: '$reaction',
+                total: { $count: { } },
+              },
+            },
+            { $sort: { total: -1 } },
+            { $project: { value: '$_id', _id: 0, total: 1 } },
+          ],
+          as: 'reactions',
+        },
+      },
     ]);
     return { posts };
+  }
+
+  async addPostReaction(postId: string, user: UserDocument, body: PostReactionDto) {
+    const reaction = new this.postReactionModel({
+      post: postId,
+      user: user._id,
+      reaction: body.reaction,
+    });
+    await reaction.save();
+    return { reaction };
   }
 }

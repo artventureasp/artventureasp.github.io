@@ -3,9 +3,13 @@ import Card from "primevue/card";
 import Avatar from "primevue/avatar";
 import Tag from "primevue/tag";
 import Image from "primevue/image";
+import Popover from "primevue/popover";
+import Button from "primevue/button";
 import { computed, ref } from "vue";
+import EmojiPicker from "vue3-emoji-picker";
 
 import anonAvatar from "@/assets/images/anonymous-hooded-avatar.webp";
+import { postApi } from "@/api/post";
 
 const { post } = defineProps({
   post: {
@@ -15,6 +19,8 @@ const { post } = defineProps({
 });
 
 const isShort = ref(true);
+const reactions = ref([ ...post.reactions ]);
+const emojiPopover = ref();
 
 const username = computed(() => {
   return !post.options.public ? 'Anonymous post' : post.user.username;
@@ -40,6 +46,26 @@ const isAudio = computed(() => {
 const isVideo = computed(() => {
   return /^video\/.+$/.test(post.media.mimetype);
 });
+
+function onSelectEmoji(emoji) {
+  emojiPopover.value.toggle();
+
+  const existing = reactions.value.find(r => r.value === emoji.i);
+  if (existing) {
+    existing.total++;
+  } else {
+    reactions.value.push({
+      value: emoji.i,
+      total: 1,
+    });
+  }
+
+  postApi.addPostReaction(post._id, { reaction: emoji.i });
+}
+
+function toggleEmoji(event) {
+  emojiPopover.value.toggle(event);
+}
 </script>
 
 <template>
@@ -65,7 +91,7 @@ const isVideo = computed(() => {
           </div>
         </div>
       </div>
-      <div class="content">
+      <div class="content mb-4">
         <div class="post-media mb-3" :class="{ image: isImage, video: isVideo }">
           <template v-if="isImage">
             <Image :src="post.media.url" class="h-100 w-100" image-class="h-100 w-100 object-fit-cover" alt="user post media" preview />
@@ -86,6 +112,18 @@ const isVideo = computed(() => {
         </div>
         <div v-html="text"></div>
         <a v-if="isShort" href="#" @click.prevent="isShort = false">More...</a>
+      </div>
+      <div>
+        <div class="mb-3">
+          <Tag v-for="reaction of reactions" rounded class="border border-dark-subtle text-dark me-1 mb-1" style="background: transparent;">
+            <span class="fs-6">{{ reaction.value }}</span>
+            <span class="text-body-secondary">{{ reaction.total }}</span>
+          </Tag>
+        </div>
+        <Button icon="pi pi-face-smile" text raised rounded @click="toggleEmoji"/>
+        <Popover ref="emojiPopover">
+          <EmojiPicker :native="true" @select="onSelectEmoji" />
+        </Popover>
       </div>
     </template>
   </Card>
