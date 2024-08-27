@@ -1,12 +1,13 @@
 <script setup>
 import Footer from '@/components/Footer.vue';
 import Header from '@/components/Header.vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 import Toast from 'primevue/toast';
 import { profileApi } from "@/api/profile";
 import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
+const route = useRoute();
 
 async function initUser() {
   try {
@@ -24,7 +25,7 @@ initUser();
   <Toast />
   <Header />
   <main>
-    <RouterView />
+    <RouterView :key="route.fullPath"/>
   </main>
 
   <Footer />

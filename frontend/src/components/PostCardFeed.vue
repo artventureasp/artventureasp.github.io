@@ -47,12 +47,16 @@ const isVideo = computed(() => {
     <template #content>
       <div class="row align-items-center mb-3">
         <div class="col-auto">
-          <Avatar :label="avatarLabel" :image="avatar" style="background-color: #ece9fc; color: #2a1261" class="mr-2" size="xlarge" shape="circle" />
+          <router-link :to="post.user ? `/account/${post.user?._id}` : ''">
+            <Avatar :label="avatarLabel" :image="avatar" style="background-color: #ece9fc; color: #2a1261" class="mr-2" size="xlarge" shape="circle" />
+          </router-link>
         </div>
         <div class="col">
           <div class="row">
             <div class="col-12">
-              <p class="mb-1">{{ username }}</p>
+              <router-link class="d-block mb-1" :to="post.user ? `/account/${post.user?._id}` : ''">
+                {{ username }}
+              </router-link>
             </div>
             <div class="col-12">
               <Tag :value="post.mood" class="me-2"/>

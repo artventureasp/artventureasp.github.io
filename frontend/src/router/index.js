@@ -23,8 +23,18 @@ const router = createRouter({
     },
     {
       path: '/account',
-      name: 'My Profile',
-      component: UserProfile
+      children: [
+        {
+          path: '',
+          name: 'My Profile',
+          component: UserProfile,
+        },
+        {
+          path: ':id',
+          name: 'User Profile',
+          component: UserProfile,
+        },
+      ],
     },
     {
       path: '/account/edit',
