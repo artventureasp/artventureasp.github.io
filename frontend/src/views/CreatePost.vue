@@ -9,7 +9,9 @@ import { ref } from "vue";
 import { postApi } from "@/api/post";
 import { useToast } from 'primevue/usetoast';
 import { topics, moods } from "@/utils/constants";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const toast = useToast();
 const { errors, defineField, handleSubmit, setFieldValue } = useForm({
   validationSchema: {
@@ -36,6 +38,7 @@ const onSubmit = handleSubmit(async values => {
   try {
     await postApi.createPost({ ...values, options: options.value });
     toast.add({ severity: 'success', summary: 'Post was created', life: 3000 });
+    router.replace('/account');
   } catch (err) {
     const message = err.data?.message ?? 'Unexpected error';
     toast.add({ severity: 'error', summary: 'Error creating a post', detail: message, life: 3000 });

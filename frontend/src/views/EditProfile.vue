@@ -85,7 +85,7 @@ const onSubmit = handleSubmit(async (values) => {
         <h2 class="mb-4">Edit Profile</h2>
         <form v-if="userStore.user" @submit="onSubmit">
           <div class="avatar mb-5">
-            <img :src="avatarSrc" alt="user avatar">
+            <img v-if="avatarSrc" :src="avatarSrc" alt="user avatar">
             <div class="edit-btn">
               <Button icon="pi pi-camera" severity="contrast" rounded @click="pickAvatar"/>
             </div>
@@ -128,6 +128,7 @@ const onSubmit = handleSubmit(async (values) => {
   height: 150px;
   border-radius: 100px;
   overflow: hidden;
+  background-color: #e2e8f0;
 }
 
 .avatar img {

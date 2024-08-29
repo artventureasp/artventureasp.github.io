@@ -1,7 +1,7 @@
 <script setup>
 import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Button from "primevue/button";
 import Sidebar from "primevue/sidebar";
 import Avatar from "primevue/avatar";
@@ -9,6 +9,10 @@ import Avatar from "primevue/avatar";
 const router = useRouter();
 const userStore = useUserStore();
 const isSidebarVisible = ref(false); //this is used to control sidebar visibility based on button click status
+
+const avatarLabel = computed(() => {
+  return !userStore.user.avatar ? userStore.user.username.toUpperCase().charAt(0) : undefined;
+});
 
 router.beforeEach(() => {
   isSidebarVisible.value = false;
@@ -59,7 +63,7 @@ function logout() {
         <!--Sign in/sign up authentication links-->
         <div>
           <router-link v-if="userStore.user" to="/account">
-            <Avatar :image="userStore.user.avatar" size="large" shape="circle" />
+            <Avatar :label="avatarLabel" :image="userStore.user.avatar" size="large" shape="circle" />
           </router-link>
           <template v-else>
             <Button as="router-link" to="/account/login" label="Log In" size="small" link/>
@@ -74,6 +78,10 @@ function logout() {
 <style scoped>
 /* Add styling here, adding tags above as required*/
 .site-header{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
   background-color: #f8f9fa; /* Light gray background */
   padding: 20px 0; 
   border-bottom: 1px solid #e9ecef;

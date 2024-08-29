@@ -1,7 +1,7 @@
 <script setup>
 import Button from "primevue/button";
 import Dialog from 'primevue/dialog';
-import { ref, defineProps, defineModel } from "vue";
+import { ref } from "vue";
 
 defineProps({
   label: String,
