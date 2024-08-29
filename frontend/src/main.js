@@ -11,6 +11,8 @@ import { defineRule } from 'vee-validate';
 //import CSS
 import 'primeicons/primeicons.css';
 import 'vue3-emoji-picker/css';
+import { profileApi } from '@/api/profile';
+import { useUserStore } from '@/stores/user';
 
 defineRule('required', value => {
   if (!value) {
@@ -29,15 +31,30 @@ defineRule('min', (value, [min]) => {
 const app = createApp(App);
 
 app.use(createPinia());
-app.use(router);
-app.use(PrimeVue, {
-  theme: {
-    preset: Theme,
-    options: {
-      darkModeSelector: '.app-dark'
-    },
-  },
-});
-app.use(ToastService);
 
-app.mount('#app');
+async function initUser() {
+  const userStore = useUserStore();
+  try {
+    const response = await profileApi.getProfile();
+    if (response?.data?.user) {
+      userStore.setUser(response.data.user);
+    }
+  } catch (err) {
+    console.log('err:', err);
+  }
+}
+
+initUser().then(() => {
+  app.use(router);
+  app.use(PrimeVue, {
+    theme: {
+      preset: Theme,
+      options: {
+        darkModeSelector: '.app-dark'
+      },
+    },
+  });
+  app.use(ToastService);
+
+  app.mount('#app');
+});

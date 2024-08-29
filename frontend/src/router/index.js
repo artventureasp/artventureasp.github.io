@@ -7,6 +7,14 @@ import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
 import EditProfile from '@/views/EditProfile.vue';
 import Feed from '@/views/Feed.vue';
+import { useUserStore } from "@/stores/user";
+
+const authGuard = () => {
+  const userStore = useUserStore();
+  if (!userStore.user) {
+    return { path: '/account/login' };
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,9 +28,11 @@ const router = createRouter({
       path: '/feed',
       name: 'Feed',
       component: Feed,
+      beforeEnter: [authGuard],
     },
     {
       path: '/account',
+      beforeEnter: [authGuard],
       children: [
         {
           path: '',
@@ -40,12 +50,14 @@ const router = createRouter({
       path: '/account/edit',
       name: 'Edit Profile',
       component: EditProfile,
+      beforeEnter: [authGuard],
     },
 
     {
       path: '/create-post',
       name: 'Create a Post',
-      component: CreatePost
+      component: CreatePost,
+      beforeEnter: [authGuard],
     },
 
     {
