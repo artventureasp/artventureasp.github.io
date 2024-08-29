@@ -5,10 +5,13 @@ import Button from "primevue/button";
 import { postApi } from "@/api/post";
 import PostCardFeed from "@/components/PostCardFeed.vue";
 import FeedFilterModal from "@/components/FeedFilterModal.vue";
+import PostCommentsModal from "@/components/PostCommentsModal.vue";
 
 const posts = ref([]);
 const isPostsLoading = ref(false);
 const isEndReached = ref(false);
+const isCommentsVisible = ref(false);
+const commentModalPost = ref();
 const filter = ref();
 let page = 1;
 
@@ -50,6 +53,11 @@ function onFilterClear() {
   page = 1;
   fetchPosts(true);
 }
+
+function onShowComments(post) {
+  commentModalPost.value = post;
+  isCommentsVisible.value = true;
+}
 </script>
 
 <template>
@@ -59,7 +67,7 @@ function onFilterClear() {
         <div class="mb-4 clearfix">
           <FeedFilterModal :is-active="isFilterActive" @apply="onFilterApply" @clear="onFilterClear"/>
         </div>
-        <PostCardFeed class="mb-5" v-for="post in posts" :key="post._id" :post="post"/>
+        <PostCardFeed class="mb-5" v-for="post in posts" :key="post._id" :post="post" @show-comments="onShowComments"/>
         <div class="text-center" v-if="isPostsLoading">
           <ProgressSpinner style="width: 70px; height: 70px;"/>
         </div>
@@ -69,5 +77,6 @@ function onFilterClear() {
         <p class="text-center" v-if="isEndReached">You have reached the end...</p>
       </div>
     </div>
+    <PostCommentsModal :post="commentModalPost" :is-visible="isCommentsVisible" @update:is-visible="isCommentsVisible = false"/>
   </div>
 </template>

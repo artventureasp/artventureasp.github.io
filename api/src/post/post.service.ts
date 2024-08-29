@@ -9,12 +9,15 @@ import { getDownloadURL } from "firebase-admin/storage";
 import { GetPostsFeedParams } from "./dto/get-posts-feed-params.dto";
 import { PostReaction, PostReactionDocument } from "./schema/post-reaction.schema";
 import { PostReactionDto } from "./dto/post-reaction.dto";
+import { PostCommentDto } from "./dto/post-comment.dto";
+import { PostComment, PostCommentDocument } from "./schema/post-comment.schema";
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
     @InjectModel(PostReaction.name) private postReactionModel: Model<PostReactionDocument>,
+    @InjectModel(PostComment.name) private postCommentModel: Model<PostCommentDocument>,
     private firebaseService: FirebaseService,
   ) { }
 
@@ -115,6 +118,21 @@ export class PostService {
           as: 'reactions',
         },
       },
+      {
+        $lookup:
+        {
+          from: 'postcomments',
+          localField: '_id',
+          foreignField: 'post',
+          pipeline: [
+            {
+              $count: 'total',
+            },
+          ],
+          as: 'comments',
+        },
+      },
+      { $unwind: { path: '$comments', preserveNullAndEmptyArrays: true } },
     ]);
     return { posts };
   }
@@ -127,5 +145,22 @@ export class PostService {
     });
     await reaction.save();
     return { reaction };
+  }
+
+  async addPostComment(postId: string, user: UserDocument, body: PostCommentDto) {
+    const comment = new this.postCommentModel({
+      post: postId,
+      user: user._id,
+      comment: body.comment,
+    });
+    await comment.save();
+    return { comment };
+  }
+
+  async getPostComments(postId: string) {
+    const comments = await this.postCommentModel.find({
+      post: postId,
+    }).populate({ path: 'user', select: 'username avatar' });
+    return { comments };
   }
 }

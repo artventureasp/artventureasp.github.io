@@ -46,6 +46,12 @@ const isAudio = computed(() => {
 const isVideo = computed(() => {
   return /^video\/.+$/.test(post.media.mimetype);
 });
+const commentsCount = computed(() => {
+  if (post.comments) {
+    return post.comments.total.toString();
+  }
+  return '0';
+});
 
 function onSelectEmoji(emoji) {
   emojiPopover.value.toggle();
@@ -124,6 +130,7 @@ function toggleEmoji(event) {
         <Popover ref="emojiPopover">
           <EmojiPicker :native="true" @select="onSelectEmoji" />
         </Popover>
+        <Button class="ms-2" icon="pi pi-comments" :label="commentsCount" text raised rounded @click="$emit('showComments', post)"/>
       </div>
     </template>
   </Card>

@@ -17,8 +17,16 @@ class PostApi extends BaseApi {
     return this.get('/posts', { page, filter });
   }
 
+  getPostComments(postId) {
+    return this.get(`/posts/${postId}/comments`);
+  }
+
   addPostReaction(postId, data) {
     return this.post(`/posts/${postId}/reactions`, data);
+  }
+
+  addPostComment(postId, data) {
+    return this.post(`/posts/${postId}/comments`, data);
   }
 }
 
