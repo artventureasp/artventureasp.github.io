@@ -37,7 +37,7 @@ function clear() {
 </script>
 
 <template>
-  <Button @click="isVisible = true" class="float-end" label="Filter" icon="pi pi-filter" :severity="isActive ? 'primary' : 'secondary'" outlined />
+  <Button @click="isVisible = true" label="Filter" icon="pi pi-filter" :severity="isActive ? 'primary' : 'secondary'" outlined />
   <Dialog v-model:visible="isVisible" modal class="feed-filter-dialog">
     <template #header>
       <h4 class="mb-0">Feed filter</h4>

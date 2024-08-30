@@ -25,6 +25,14 @@ export class PostController {
     return this.postService.getPostsFeed(query);
   }
 
+  @Get('following')
+  getPostsFollowingFeed(
+    @Query(new ValidationPipe()) query: GetPostsFeedParams,
+    @Req() req: any,
+  ) {
+    return this.postService.getPostsFollowingFeed(query, req.user);
+  }
+
   @Post(':postId/reactions')
   addPostReaction(
     @Param('postId') postId: string,

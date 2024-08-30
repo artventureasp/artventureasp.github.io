@@ -11,6 +11,7 @@ import { PostReaction, PostReactionDocument } from "./schema/post-reaction.schem
 import { PostReactionDto } from "./dto/post-reaction.dto";
 import { PostCommentDto } from "./dto/post-comment.dto";
 import { PostComment, PostCommentDocument } from "./schema/post-comment.schema";
+import { Follower, FollowerDocument } from "../user/schema/follower.schema";
 
 @Injectable()
 export class PostService {
@@ -18,6 +19,7 @@ export class PostService {
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
     @InjectModel(PostReaction.name) private postReactionModel: Model<PostReactionDocument>,
     @InjectModel(PostComment.name) private postCommentModel: Model<PostCommentDocument>,
+    @InjectModel(Follower.name) private followerModel: Model<FollowerDocument>,
     private firebaseService: FirebaseService,
   ) { }
 
@@ -49,8 +51,8 @@ export class PostService {
     return { post: newPost };
   }
 
-  async getPostsFeed(params: GetPostsFeedParams) {
-    const query: any = {};
+  async getPostsFeed(params: GetPostsFeedParams, extraQuery: any = {}) {
+    let query: any = {};
     const limit = 5;
     const skip = (params.page * limit) - limit;
 
@@ -63,6 +65,11 @@ export class PostService {
         query.mood = { $in: filter.moods };
       }
     }
+
+    query = {
+      ...query,
+      ...extraQuery,
+    };
 
     const posts = await this.postModel.aggregate([
       { $match: query },
@@ -135,6 +142,14 @@ export class PostService {
       { $unwind: { path: '$comments', preserveNullAndEmptyArrays: true } },
     ]);
     return { posts };
+  }
+
+  async getPostsFollowingFeed(params: GetPostsFeedParams, user: UserDocument) {
+    const following = await this.followerModel.find({
+      follower: user._id,
+    });
+    const followingIds = following.map(f => f.user);
+    return this.getPostsFeed(params, { user: { $in: followingIds } });
   }
 
   async addPostReaction(postId: string, user: UserDocument, body: PostReactionDto) {
