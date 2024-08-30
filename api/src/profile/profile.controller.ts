@@ -9,7 +9,7 @@ export class ProfileController {
 
   @Get()
   getProfile(@Req() req: any) {
-    return { user: req.user };
+    return this.profileService.getProfile(req.user);
   }
 
   @Put()

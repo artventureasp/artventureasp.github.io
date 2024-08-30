@@ -3,6 +3,8 @@ import Tag from 'primevue/tag';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 
+defineEmits(['following']);
+
 const { user, isEditable } = defineProps({
   user: {
     type: Object,
@@ -17,7 +19,7 @@ const { user, isEditable } = defineProps({
 </script>
 
 <template>
-  <div class="mb-2">
+  <div class="mb-3">
     <div class="avatar m-auto">
       <div v-if="!user.avatar" class="avatar-placeholder">
         <span>{{ user.username.toUpperCase().charAt(0) }}</span>
@@ -25,12 +27,15 @@ const { user, isEditable } = defineProps({
       <img v-else :src="user.avatar" alt="Avatar" preview />
     </div>
   </div>
-  <div class="mb-2">
-    <p class="text-center fs-5 m-0">{{ user.username }}</p>
-  </div>
-  <div class="text-center mb-4">
+  <div class="mb-3 d-flex justify-content-center">
+    <p class="text-center fs-5 m-0 me-2">{{ user.username }}</p>
     <Tag v-if="user.settings.public" value="Public" severity="info"/>
     <Tag v-else value="Private" severity="contrast"/>
+  </div>
+  <div class="mb-4 text-center">
+    <span class="me-3"><strong>{{ user.followersInfo.following }}</strong> following</span>
+    <Button :label="!user.followersInfo.isFollowing ? 'Follow' : 'Unfollow'" :outlined="user.followersInfo.isFollowing" size="small" v-if="!isEditable" @click="$emit('following')"/>
+    <span class="ms-3"><strong>{{ user.followersInfo.followers }}</strong> followers</span>
   </div>
   <div v-if="isEditable" class="text-center mb-4">
     <Button as="router-link" to="/account/edit" label="Edit profile" icon="pi pi-user-edit" size="small" severity="secondary" outlined/>

@@ -8,6 +8,10 @@ class UserApi extends BaseApi {
   getPosts(userId) {
     return this.get(`/users/${userId}/posts`);
   }
+
+  updateFollowing(userId) {
+    return this.put(`/users/${userId}/followers`);
+  }
 }
 
 export const userApi = new UserApi();

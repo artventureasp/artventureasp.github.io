@@ -58,13 +58,22 @@ async function fetchPosts() {
 }
 fetchPosts();
 
+async function onFollowing() {
+  try {
+    const response = await userApi.updateFollowing(user.value._id);
+    user.value = response.data.user;
+  } catch (err) {
+    console.log('err:', err);
+  }
+}
+
 </script>
 
 <template>
   <div class="container py-5">
     <template v-if="user">
       <template v-if="canReadProfile">
-        <UserProfileView :user="user" :is-editable="isEditable" />
+        <UserProfileView :user="user" :is-editable="isEditable" @following="onFollowing"/>
         <div class="pt-3 posts">
           <h3 class="text-center mb-4">Posts</h3>
           <div class="text-center" v-if="isPostsLoading">
