@@ -6,6 +6,7 @@ import { Post, PostSchema } from "./schema/post.schema";
 import { ServicesModule } from "../services/services.module";
 import { PostReaction, PostReactionSchema } from "./schema/post-reaction.schema";
 import { PostComment, PostCommentSchema } from "./schema/post-comment.schema";
+import { Follower, FollowerSchema } from "../user/schema/follower.schema";
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { PostComment, PostCommentSchema } from "./schema/post-comment.schema";
       { name: Post.name, schema: PostSchema },
       { name: PostReaction.name, schema: PostReactionSchema },
       { name: PostComment.name, schema: PostCommentSchema },
+      { name: Follower.name, schema: FollowerSchema },
     ]),
     ServicesModule,
   ],

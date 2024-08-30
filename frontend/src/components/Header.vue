@@ -61,7 +61,7 @@ function logout() {
           </div>
         </div>
         <!--Sign in/sign up authentication links-->
-        <div>
+        <div class="text-end">
           <router-link v-if="userStore.user" to="/account">
             <Avatar :label="avatarLabel" :image="userStore.user.avatar" size="large" shape="circle" />
           </router-link>

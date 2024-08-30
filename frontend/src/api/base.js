@@ -43,6 +43,13 @@ export class BaseApi {
     return response;
   }
 
+  async put(url, data) {
+    const response = await this.client.put(url, JSON.stringify(data));
+    this.parseResponse(response);
+    this.checkResponse(response);
+    return response;
+  }
+
   async postForm(url, form) {
     const response = await this.client.post(url, form);
     this.parseResponse(response);

@@ -13,7 +13,10 @@ class PostApi extends BaseApi {
     return this.postForm('/posts', form);
   }
 
-  getPostsFeed(page, filter) {
+  getPostsFeed(page, filter, isFollowing) {
+    if (isFollowing) {
+      return this.get('/posts/following', { page, filter });
+    }
     return this.get('/posts', { page, filter });
   }
 

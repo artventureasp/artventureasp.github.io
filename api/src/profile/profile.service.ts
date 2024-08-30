@@ -6,14 +6,27 @@ import { Model } from "mongoose";
 import { FirebaseService } from "../services/firebase.service";
 import { getDownloadURL } from "firebase-admin/storage";
 import { Post, PostDocument } from "../post/schema/post.schema";
+import { Follower, FollowerDocument } from "../user/schema/follower.schema";
 
 @Injectable()
 export class ProfileService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Post.name) private postModel: Model<PostDocument>,
+    @InjectModel(Follower.name) private followerModel: Model<FollowerDocument>,
     private firebaseService: FirebaseService,
   ) {}
+
+  async getProfile(user: UserDocument) {
+    const followersInfo: any = {};
+    followersInfo.followers = await this.followerModel.countDocuments({ user: user._id });
+    followersInfo.following = await this.followerModel.countDocuments({ follower: user._id });
+    const userData = {
+      ...user.toObject(),
+      followersInfo,
+    };
+    return { user: userData };
+  }
 
   async updateProfile(body: UpdateProfileDto, avatar: any, user: UserDocument) {
     const dbUser = await this.userModel.findById(user._id);

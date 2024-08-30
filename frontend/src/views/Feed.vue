@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import ProgressSpinner from "primevue/progressspinner";
 import Button from "primevue/button";
+import SelectButton from "primevue/selectbutton";
 import { postApi } from "@/api/post";
 import PostCardFeed from "@/components/PostCardFeed.vue";
 import FeedFilterModal from "@/components/FeedFilterModal.vue";
@@ -13,7 +14,17 @@ const isEndReached = ref(false);
 const isCommentsVisible = ref(false);
 const commentModalPost = ref();
 const filter = ref();
+const postsDisplayOption = ref(0);
+const postsDisplayOptions = [
+  { title: 'All', value: 0 },
+  { title: 'Following', value: 1 },
+];
 let page = 1;
+
+watch(postsDisplayOption, (value) => {
+  page = 1;
+  fetchPosts(true);
+}, { immediate: true });
 
 const isFilterActive = computed(() => {
   return !!filter.value;
@@ -22,13 +33,16 @@ const isFilterActive = computed(() => {
 async function fetchPosts(shouldReset = false) {
   isEndReached.value = false;
   isPostsLoading.value = true;
+  if (shouldReset) {
+    posts.value = [];
+  }
   try {
-    const response = await postApi.getPostsFeed(page, JSON.stringify(filter.value));
-    if (shouldReset) {
-      posts.value = response.data.posts;
-    } else {
-      posts.value = posts.value.concat(response.data.posts);
-    }
+    const response = await postApi.getPostsFeed(
+      page,
+      JSON.stringify(filter.value),
+      postsDisplayOption.value == 1,
+    );
+    posts.value = posts.value.concat(response.data.posts);
     if (response.data.posts.length) {
       page++;
     } else if (page > 1) {
@@ -40,7 +54,6 @@ async function fetchPosts(shouldReset = false) {
     isPostsLoading.value = false;
   }
 }
-fetchPosts();
 
 function onFilterApply(newFilter) {
   filter.value = newFilter;
@@ -64,7 +77,8 @@ function onShowComments(post) {
   <div class="container py-5">
     <div class="row justify-content-center">
       <div class="col-12 col-sm-10 col-md-8">
-        <div class="mb-4 clearfix">
+        <div class="mb-4 d-flex justify-content-between">
+          <SelectButton v-model="postsDisplayOption" :options="postsDisplayOptions" option-label="title" option-value="value" />
           <FeedFilterModal :is-active="isFilterActive" @apply="onFilterApply" @clear="onFilterClear"/>
         </div>
         <PostCardFeed class="mb-5" v-for="post in posts" :key="post._id" :post="post" @show-comments="onShowComments"/>
