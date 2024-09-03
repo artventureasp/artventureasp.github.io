@@ -54,6 +54,11 @@ const onFileSelect = (e) => {
 const onFileClear = (e) => {
   setFieldValue('media', null);
 };
+
+const onFileRemove = (removeFileCallback, index) => {
+  setFieldValue('media', null);
+  removeFileCallback(index);
+};
 </script>
 
 <template>
@@ -85,7 +90,7 @@ const onFileClear = (e) => {
           </div>
           <div class="mb-4">
             <div class="card">
-              <FileUpload @clear="onFileClear" @remove="onFileClear" @select="onFileSelect" :file-limit="1" accept="image/*,audio/*,video/*">
+              <FileUpload @clear="onFileClear" @select="onFileSelect" :file-limit="1" accept="image/*,audio/*,video/*">
                 <template #header="{ chooseCallback, clearCallback, files }">
                   <div class="row">
                     <div class="col-12">
@@ -99,6 +104,19 @@ const onFileClear = (e) => {
                 </template>
                 <template #empty>
                     <span>Or drag and drop files here to upload.</span>
+                </template>
+                <template #content="{ files, removeFileCallback }">
+                  <div class="d-flex flex-column">
+                    <template v-if="files.length > 0">
+                      <div class="d-flex align-items-center" v-for="(file, index) of files" :key="file.name + file.type + file.size">
+                        <div class="me-3">
+                            <img role="presentation" :alt="file.name" :src="file.objectURL" width="50" />
+                        </div>
+                        <span>{{ file.name }}</span>
+                        <Button class="ms-auto" icon="pi pi-times" @click="onFileRemove(removeFileCallback, index)" outlined rounded severity="danger" />
+                      </div>
+                    </template>
+                  </div>
                 </template>
               </FileUpload>
               <p v-if="errors.media" class="text-danger">{{ errors.media }}</p>
