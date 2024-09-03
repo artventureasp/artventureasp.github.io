@@ -37,7 +37,7 @@ function clear() {
 </script>
 
 <template>
-  <Button @click="isVisible = true" label="Filter" icon="pi pi-filter" :severity="isActive ? 'primary' : 'secondary'" outlined />
+  <Button aria-label="Filter feed button" @click="isVisible = true" label="Filter" icon="pi pi-filter" :severity="isActive ? 'primary' : 'secondary'" outlined />
   <Dialog v-model:visible="isVisible" modal class="feed-filter-dialog">
     <template #header>
       <h4 class="mb-0">Feed filter</h4>
@@ -53,8 +53,8 @@ function clear() {
       </div>
     </div>
     <div class="clearfix position-sticky bottom-0">
-      <Button @click="save" label="Save" class="float-end" />
-      <Button @click="clear" :disabled="!isClearable" label="Clear" severity="secondary" class="float-end me-3" />
+      <Button aria-label="Save filter button" @click="save" label="Save" class="float-end" />
+      <Button aria-labe="Clear filter button" @click="clear" :disabled="!isClearable" label="Clear" severity="secondary" class="float-end me-3" />
     </div>
   </Dialog>
 </template>

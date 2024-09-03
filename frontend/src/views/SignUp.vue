@@ -62,7 +62,7 @@ const onSubmit = handleSubmit(async (values) => {
             <small v-if="errors.password" class="text-danger">{{ errors.password }}</small>
           </div>
           <div class="mt-3 col-auto">
-            <Button :loading="isLoading" label="Sign Up" size="large" type="submit" />
+            <Button aria-label="Sign up button" :loading="isLoading" label="Sign Up" size="large" type="submit" />
           </div>
         </div>
       </form>

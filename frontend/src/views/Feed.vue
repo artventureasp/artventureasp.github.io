@@ -95,7 +95,7 @@ function onNewComment() {
           <ProgressSpinner style="width: 70px; height: 70px;"/>
         </div>
         <div class="text-center" v-if="posts.length && !isPostsLoading && !isEndReached">
-          <Button @click="fetchPosts()" label="Load more" severity="secondary" outlined />
+          <Button aria-label="Load more posts button" @click="fetchPosts()" label="Load more" severity="secondary" outlined />
         </div>
         <p class="text-center" v-if="isEndReached">You have reached the end...</p>
       </div>

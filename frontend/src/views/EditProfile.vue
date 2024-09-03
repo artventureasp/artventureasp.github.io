@@ -87,7 +87,7 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="avatar mb-5">
             <img v-if="avatarSrc" :src="avatarSrc" alt="user avatar">
             <div class="edit-btn">
-              <Button icon="pi pi-camera" severity="contrast" rounded @click="pickAvatar"/>
+              <Button aria-label="Pick avatar button" icon="pi pi-camera" severity="contrast" rounded @click="pickAvatar"/>
             </div>
             <input class="d-none" type="file" ref="avatarFileInput" accept="image/*" @change="onAvatarChange">
           </div>
@@ -113,7 +113,7 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
           </div>
           <div>
-            <Button label="Save" class="float-end" type="submit" :loading="isLoading"/>
+            <Button aria-label="Save profile button" label="Save" class="float-end" type="submit" :loading="isLoading"/>
           </div>
         </form>
       </div>

@@ -86,7 +86,7 @@ function sendComment() {
         <Textarea v-model="newComment" placeholder="Type your comment..." autoResize rows="3" style="width: 100%;" />
       </div>
       <div class="col-auto">
-        <Button @click="sendComment" :disabled="!isCommentValid" icon="pi pi-send" title="Send" size="large" text raised rounded/>
+        <Button aria-label="Send comment button" @click="sendComment" :disabled="!isCommentValid" icon="pi pi-send" title="Send" size="large" text raised rounded/>
       </div>
     </div>
   </Dialog>

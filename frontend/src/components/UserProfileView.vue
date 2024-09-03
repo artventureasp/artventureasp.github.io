@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 import Tag from 'primevue/tag';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
@@ -14,6 +15,10 @@ const { user, isEditable } = defineProps({
     type: Boolean,
     default: false,
   },
+});
+
+const followLabel = computed(() => {
+  return !user.followersInfo.isFollowing ? 'Follow' : 'Unfollow';
 });
 
 </script>
@@ -34,7 +39,7 @@ const { user, isEditable } = defineProps({
   </div>
   <div class="mb-4 text-center">
     <span class="me-3"><strong>{{ user.followersInfo.following }}</strong> following</span>
-    <Button :label="!user.followersInfo.isFollowing ? 'Follow' : 'Unfollow'" :outlined="user.followersInfo.isFollowing" size="small" v-if="!isEditable" @click="$emit('following')"/>
+    <Button :aria-label="followLabel + ' user button'" :label="followLabel" :outlined="user.followersInfo.isFollowing" size="small" v-if="!isEditable" @click="$emit('following')"/>
     <span class="ms-3"><strong>{{ user.followersInfo.followers }}</strong> followers</span>
   </div>
   <div v-if="isEditable" class="text-center mb-4">

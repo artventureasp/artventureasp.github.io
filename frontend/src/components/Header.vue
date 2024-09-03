@@ -32,7 +32,7 @@ function logout() {
       <div class="d-flex justify-content-between align-items-center">
         <div>
           <!--Button for toggleable sidebar-->
-          <Button icon="pi pi-bars" @click="isSidebarVisible = true" class="p-button-rounded p-button-text"></Button>
+          <Button aria-label="Open menu button" icon="pi pi-bars" @click="isSidebarVisible = true" text rounded />
           <!--sidebar contents-->
           <Sidebar v-model:visible="isSidebarVisible" position="left">
             <nav>

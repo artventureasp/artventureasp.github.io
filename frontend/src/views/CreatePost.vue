@@ -71,7 +71,7 @@ const onFileRemove = (removeFileCallback, index) => {
               <h2 class="m-0">Make a Post</h2>
             </div>
             <div class="col">
-              <Button label="Options" severity="secondary" size="small" @click="isOptionsVisible = true" />
+              <Button aria-label="Post options button" label="Options" severity="secondary" size="small" @click="isOptionsVisible = true" />
             </div>
           </div>
           <div class="row mb-3">
@@ -97,8 +97,8 @@ const onFileRemove = (removeFileCallback, index) => {
                       <p>Supported file formats mp3/picture/video</p>
                     </div>
                     <div class="col-12">
-                      <Button @click="chooseCallback()" icon="pi pi-plus" label="Choose"></Button>
-                      <Button @click="clearCallback()" class="ms-3" icon="pi pi-times" label="Cancel" severity="secondary" :disabled="!files || files.length === 0"></Button>
+                      <Button aria-label="Choose file button" @click="chooseCallback()" icon="pi pi-plus" label="Choose"></Button>
+                      <Button aria-label="Clear picked files button" @click="clearCallback()" class="ms-3" icon="pi pi-times" label="Cancel" severity="secondary" :disabled="!files || files.length === 0"></Button>
                     </div>
                   </div>
                 </template>
@@ -113,7 +113,7 @@ const onFileRemove = (removeFileCallback, index) => {
                             <img role="presentation" :alt="file.name" :src="file.objectURL" width="50" />
                         </div>
                         <span>{{ file.name }}</span>
-                        <Button class="ms-auto" icon="pi pi-times" @click="onFileRemove(removeFileCallback, index)" outlined rounded severity="danger" />
+                        <Button aria-label="Remove file button" class="ms-auto" icon="pi pi-times" @click="onFileRemove(removeFileCallback, index)" outlined rounded severity="danger" />
                       </div>
                     </template>
                   </div>
@@ -126,9 +126,9 @@ const onFileRemove = (removeFileCallback, index) => {
             <Editor v-model="text" editor-style="height: 300px" placeholder="What is on your mind?">
               <template v-slot:toolbar>
                 <span class="ql-formats">
-                  <button class="ql-bold"></button>
-                  <button class="ql-italic"></button>
-                  <button class="ql-underline"></button>
+                  <button aria-label="Editor text bold button" class="ql-bold"></button>
+                  <button aria-label="Editor text italic button" class="ql-italic"></button>
+                  <button aria-label="Editor text underline button" class="ql-underline"></button>
                 </span>
                 <span class="ql-formats">
                   <select class="ql-color"></select>
@@ -139,7 +139,7 @@ const onFileRemove = (removeFileCallback, index) => {
             <p v-if="errors.text" class="text-danger">{{ errors.text }}</p>
           </div>
           <div>
-            <Button :loading="isLoading" type="submit" class="float-end" size="large" label="Upload" />
+            <Button aria-label="Upload post button" :loading="isLoading" type="submit" class="float-end" size="large" label="Upload" />
           </div>
         </form>
       </div>
