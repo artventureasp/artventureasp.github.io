@@ -71,6 +71,15 @@ function onShowComments(post) {
   commentModalPost.value = post;
   isCommentsVisible.value = true;
 }
+
+function onNewComment() {
+  const comments = commentModalPost.value.comments;
+  if (comments?.total) {
+    comments.total++;
+  } else {
+    commentModalPost.value.comments = { total: 1 };
+  }
+}
 </script>
 
 <template>
@@ -86,11 +95,11 @@ function onShowComments(post) {
           <ProgressSpinner style="width: 70px; height: 70px;"/>
         </div>
         <div class="text-center" v-if="posts.length && !isPostsLoading && !isEndReached">
-          <Button @click="fetchPosts()" label="Load more" severity="secondary" outlined />
+          <Button aria-label="Load more posts button" @click="fetchPosts()" label="Load more" severity="secondary" outlined />
         </div>
         <p class="text-center" v-if="isEndReached">You have reached the end...</p>
       </div>
     </div>
-    <PostCommentsModal :post="commentModalPost" :is-visible="isCommentsVisible" @update:is-visible="isCommentsVisible = false"/>
+    <PostCommentsModal :post="commentModalPost" :is-visible="isCommentsVisible" @update:is-visible="isCommentsVisible = false" @update:new-comment="onNewComment"/>
   </div>
 </template>

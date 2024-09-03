@@ -126,11 +126,11 @@ function toggleEmoji(event) {
             <span class="text-body-secondary">{{ reaction.total }}</span>
           </Tag>
         </div>
-        <Button icon="pi pi-face-smile" text raised rounded @click="toggleEmoji"/>
+        <Button aria-label="Choose reaction icon button" icon="pi pi-face-smile" text raised rounded @click="toggleEmoji"/>
         <Popover ref="emojiPopover">
           <EmojiPicker :native="true" @select="onSelectEmoji" />
         </Popover>
-        <Button class="ms-2" icon="pi pi-comments" :label="commentsCount" text raised rounded @click="$emit('showComments', post)"/>
+        <Button aria-label="Open comments modal button" class="ms-2" icon="pi pi-comments" :label="commentsCount" text raised rounded @click="$emit('showComments', post)"/>
       </div>
     </template>
   </Card>

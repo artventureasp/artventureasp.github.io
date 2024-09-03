@@ -22,7 +22,7 @@ function update(option) {
 </script>
 
 <template>
-  <Button :class="class" :style="style" :label="model || label" :rounded="rounded" @click="isVisible = true"/>
+  <Button :aria-label="label + ' picker button'" :class="class" :style="style" :label="model || label" :rounded="rounded" @click="isVisible = true"/>
   <Dialog v-model:visible="isVisible" modal class="modal-field-dialog">
     <template #header>
       <h4 class="mb-0">{{ label }}</h4>

@@ -56,7 +56,7 @@ const onSubmit = handleSubmit(async (values) => {
             <InputText v-model="password" :invalid="!!errors.password" class="w-100" type="password" size="large" placeholder="Password" />
           </div>
           <div class="mt-3 col-auto">
-            <Button :loading="isLoading" label="Log In" size="large" type="submit" />
+            <Button aria-label="Log in button" :loading="isLoading" label="Log In" size="large" type="submit" />
           </div>
         </div>
       </form>

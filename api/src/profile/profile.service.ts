@@ -18,11 +18,12 @@ export class ProfileService {
   ) {}
 
   async getProfile(user: UserDocument) {
+    const dbUser = await this.userModel.findById(user._id);
     const followersInfo: any = {};
     followersInfo.followers = await this.followerModel.countDocuments({ user: user._id });
     followersInfo.following = await this.followerModel.countDocuments({ follower: user._id });
     const userData = {
-      ...user.toObject(),
+      ...dbUser.toObject(),
       followersInfo,
     };
     return { user: userData };
@@ -58,7 +59,7 @@ export class ProfileService {
       }
       throw new BadRequestException({ message: err.message });
     }
-    return { user: dbUser };
+    return this.getProfile(user);
   }
 
   async getPosts(user: UserDocument) {

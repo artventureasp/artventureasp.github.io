@@ -3,7 +3,7 @@
 
 <template>
   <div class="container py-5">
-    <div class="hero mb-3">
+    <div class="hero mb-5">
       <div class="row align-items-center justify-content-center">
         <div class="col-12 col-md-auto">
           <div class="text-center">
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="about">
-      <h3 class="text-center mb-4">About ArtVenture</h3>
+      <h2 class="text-center mb-4 fs-3">About ArtVenture</h2>
       <div class="row align-items-center mb-4">
         <div class="col-12 col-md-auto text-center mb-2">
           <img src="@/assets/images/mountains-7409870_1280 1.png" alt="abstract mountains">

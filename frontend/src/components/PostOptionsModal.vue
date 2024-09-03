@@ -61,7 +61,7 @@ function reset() {
         </p>
       </div>
     </div>
-    <Button label="Save" class="float-end" @click="save" />
+    <Button aria-label="Save post settings button" label="Save" class="float-end" @click="save" />
   </Dialog>
 </template>
 

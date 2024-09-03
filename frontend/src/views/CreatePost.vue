@@ -54,6 +54,11 @@ const onFileSelect = (e) => {
 const onFileClear = (e) => {
   setFieldValue('media', null);
 };
+
+const onFileRemove = (removeFileCallback, index) => {
+  setFieldValue('media', null);
+  removeFileCallback(index);
+};
 </script>
 
 <template>
@@ -66,7 +71,7 @@ const onFileClear = (e) => {
               <h2 class="m-0">Make a Post</h2>
             </div>
             <div class="col">
-              <Button label="Options" severity="secondary" size="small" @click="isOptionsVisible = true" />
+              <Button aria-label="Post options button" label="Options" severity="secondary" size="small" @click="isOptionsVisible = true" />
             </div>
           </div>
           <div class="row mb-3">
@@ -85,20 +90,33 @@ const onFileClear = (e) => {
           </div>
           <div class="mb-4">
             <div class="card">
-              <FileUpload @clear="onFileClear" @remove="onFileClear" @select="onFileSelect" :file-limit="1" accept="image/*,audio/*,video/*">
+              <FileUpload @clear="onFileClear" @select="onFileSelect" :file-limit="1" accept="image/*,audio/*,video/*">
                 <template #header="{ chooseCallback, clearCallback, files }">
                   <div class="row">
                     <div class="col-12">
                       <p>Supported file formats mp3/picture/video</p>
                     </div>
                     <div class="col-12">
-                      <Button @click="chooseCallback()" icon="pi pi-plus" label="Choose"></Button>
-                      <Button @click="clearCallback()" class="ms-3" icon="pi pi-times" label="Cancel" severity="secondary" :disabled="!files || files.length === 0"></Button>
+                      <Button aria-label="Choose file button" @click="chooseCallback()" icon="pi pi-plus" label="Choose"></Button>
+                      <Button aria-label="Clear picked files button" @click="clearCallback()" class="ms-3" icon="pi pi-times" label="Cancel" severity="secondary" :disabled="!files || files.length === 0"></Button>
                     </div>
                   </div>
                 </template>
                 <template #empty>
                     <span>Or drag and drop files here to upload.</span>
+                </template>
+                <template #content="{ files, removeFileCallback }">
+                  <div class="d-flex flex-column">
+                    <template v-if="files.length > 0">
+                      <div class="d-flex align-items-center" v-for="(file, index) of files" :key="file.name + file.type + file.size">
+                        <div class="me-3">
+                            <img role="presentation" :alt="file.name" :src="file.objectURL" width="50" />
+                        </div>
+                        <span>{{ file.name }}</span>
+                        <Button aria-label="Remove file button" class="ms-auto" icon="pi pi-times" @click="onFileRemove(removeFileCallback, index)" outlined rounded severity="danger" />
+                      </div>
+                    </template>
+                  </div>
                 </template>
               </FileUpload>
               <p v-if="errors.media" class="text-danger">{{ errors.media }}</p>
@@ -108,9 +126,9 @@ const onFileClear = (e) => {
             <Editor v-model="text" editor-style="height: 300px" placeholder="What is on your mind?">
               <template v-slot:toolbar>
                 <span class="ql-formats">
-                  <button class="ql-bold"></button>
-                  <button class="ql-italic"></button>
-                  <button class="ql-underline"></button>
+                  <button aria-label="Editor text bold button" class="ql-bold"></button>
+                  <button aria-label="Editor text italic button" class="ql-italic"></button>
+                  <button aria-label="Editor text underline button" class="ql-underline"></button>
                 </span>
                 <span class="ql-formats">
                   <select class="ql-color"></select>
@@ -121,7 +139,7 @@ const onFileClear = (e) => {
             <p v-if="errors.text" class="text-danger">{{ errors.text }}</p>
           </div>
           <div>
-            <Button :loading="isLoading" type="submit" class="float-end" size="large" label="Upload" />
+            <Button aria-label="Upload post button" :loading="isLoading" type="submit" class="float-end" size="large" label="Upload" />
           </div>
         </form>
       </div>
