@@ -8,7 +8,7 @@ import PostComment from "@/components/PostComment.vue";
 import { postApi } from "@/api/post";
 import { useUserStore } from "@/stores/user";
 
-const emit = defineEmits(['update:is-visible']);
+const emit = defineEmits(['update:is-visible', 'update:new-comment']);
 
 const props = defineProps({
   isVisible: {
@@ -51,14 +51,16 @@ async function fetchComments() {
 }
 
 function sendComment() {
-  comments.value.push({
+  const commentWithUser = {
     comment: newComment.value,
     user: {
       avatar: userStore.user.avatar,
       username: userStore.user.username,
     },
-  });
+  };
+  comments.value.push(commentWithUser);
   postApi.addPostComment(props.post._id, { comment: newComment.value });
+  emit('update:new-comment', commentWithUser);
   newComment.value = '';
 }
 </script>
