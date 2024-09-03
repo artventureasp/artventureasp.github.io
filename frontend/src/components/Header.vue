@@ -29,7 +29,7 @@ function logout() {
 <template>
   <header class = "site-header">
     <div class="container-fluid">
-      <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
         <div>
           <!--Button for toggleable sidebar-->
           <Button aria-label="Open menu button" icon="pi pi-bars" @click="isSidebarVisible = true" text rounded />
@@ -54,20 +54,18 @@ function logout() {
             </nav>
           </Sidebar>
         </div>
-        <div class="d-flex justify-content-center flex-grow-1"> <!-- Flex container for logo/title to center them -->
+        <div class="ms-4 d-flex justify-content-center align-items-center"> <!-- Flex container for logo/title to center them -->
           <!-- Logo and Title Container -->              <img src="@/assets/images/ArtVentureLogo.svg" alt="Artventure Logo" class="logo" />
-          <div class="d-flex align-items-center"> <!-- Container for logo and title -->
-            <h1 class="ms-3">ArtVenture</h1>
-          </div>
+          <span class="ms-3 fs-3">ArtVenture</span>
         </div>
         <!--Sign in/sign up authentication links-->
-        <div class="text-end">
+        <div class="text-end ms-auto">
           <router-link v-if="userStore.user" to="/account">
             <Avatar :label="avatarLabel" :image="userStore.user.avatar" size="large" shape="circle" />
           </router-link>
           <template v-else>
-            <Button as="router-link" to="/account/login" label="Log In" size="small" link/>
-            <Button class="ms-2" as="router-link" to="/account/sign-up" label="Sign Up" size="small"/>
+            <Button as="router-link" to="/account/login" label="Log In" link/>
+            <Button class="ms-2" as="router-link" to="/account/sign-up" label="Sign Up"/>
           </template>
         </div>
       </div>
@@ -88,7 +86,7 @@ function logout() {
 }
 
 .logo {
-  max-height: 50px; /* Limit Height of Logo */
+  max-height: 40px; /* Limit Height of Logo */
 }
 
 h1 {
